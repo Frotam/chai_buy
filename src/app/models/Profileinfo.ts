@@ -1,6 +1,6 @@
 import { model, models, Schema, Model } from "mongoose";
 
-type Profileinfo = {
+export type Profileinfo = {
   username: string;
   displayName: string;
   bio: string;
@@ -15,8 +15,8 @@ const ProfileinfoSchema = new Schema<Profileinfo>(
     email:{type:String,required:true},
     displayName: { type: String },
     bio: { type: String },
-    avatar: { type: String },
-    coverurl: { type: String },
+    avatar: { type: String ,default:"" },
+    coverurl: { type: String,default:`https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload/v1746175525/OIP_mm4lto.jpg` },
   },
   { timestamps: true }
 );
