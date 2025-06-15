@@ -2,6 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
+    domains:['res.cloudinary.com'],
     remotePatterns: [
       {
         protocol: 'https',
@@ -9,6 +10,11 @@ const nextConfig: NextConfig = {
         pathname: '/**', // allow all paths under this domain
       },
     ],
+  },
+  experimental: {
+    serverActions: {
+      bodySizeLimit: '5mb',  
+    },
   },
 };
 

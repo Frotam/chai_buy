@@ -6,6 +6,7 @@ import { authOptions } from "@/app/lib/authoptions";
 import { Profileinfo } from "@/app/models/Profileinfo";
 import { getServerSession } from "next-auth";
 import { ChangeEvent, ChangeEventHandler, useEffect, useState } from "react";
+import toast from "react-hot-toast";
 type Props={
   profileinfo:Profileinfo|null
   avatar: string | null | undefined;
@@ -16,9 +17,20 @@ function Profileinforform({profileinfo,avatar}:Props  ) {
 
 
   const save = async (formdata: FormData) => {
-    const data = await saveprofile(formdata);
-    console.log(data);
+    try {
+      await toast.promise(
+        saveprofile(formdata), // directly use the promise-returning function
+        {
+          loading: 'Saving...',
+          success: <b>Profile Saved!</b>,
+          error: <b>Could not save.</b>,
+        }
+      );
+    } catch (err) {
+      console.error("Save failed:", err);
+    }
   };
+  
  
   
   const [url, setUrl] = useState<string | null>(
@@ -48,27 +60,90 @@ function Profileinforform({profileinfo,avatar}:Props  ) {
     const target = ev.target as HTMLInputElement;
     if (target.files?.length) {
       const file = target.files[0];
-      console.log("upload the file", file);
-      const uploadedUrl = await uploadactions(file);
-      setUrl(uploadedUrl);  
-      console.log("uploaded banner url:", uploadedUrl);
+      console.log("Uploading the file", file);
+  
+      // Show a loading toast initially
+      const toastId = toast.loading('Uploading...');
+  
+      let progress = 0;
+      
+      // Create an interval to simulate progress
+      const interval = setInterval(() => {
+        if (progress >= 100) {
+          clearInterval(interval); 
+          return;
+        }
+        progress += 10;  
+        
+      
+        toast.loading(`Uploading... ${progress}%`, {
+          style: {backgroundColor:'#352600',
+            color:"wheat"
+          },
+          id: toastId, // Ensure we're updating the existing toast
+        });
+      }, 500);
+  
+      try {
+         
+        const uploadedUrl = await uploadactions(file);
+  
+        // Once the upload is done, clear the interval and show success toast
+        clearInterval(interval); // Clear the progress interval
+        toast.success('Upload complete!', {
+          id: toastId, 
+        });
+  
+        setUrl(uploadedUrl); // Update the URL state with the uploaded URL
+        console.log("Uploaded banner URL:", uploadedUrl);
+      } catch (error) {
+        // In case of an error, clear the interval and show an error toast
+        clearInterval(interval); // Clear the progress interval
+        toast.error('Upload failed!', {
+          id: toastId, // Ensure we're updating the existing toast
+        });
+      }
     }
   };
   const uploadAvatar=async (ev:ChangeEvent<HTMLInputElement>)=>{
     const target=ev.target as HTMLInputElement
     if(target.files?.length){
       const file=target.files[0];
-      const uploadedUrl = await uploadactions(file);
-      setAvatarurl(uploadedUrl)
-      console.log("uploaded avatar", uploadedUrl);
-
-    }
-
-
-
-
-
-  }
+      const toastId=toast.loading('Uploading.....',{
+        style: {backgroundColor:'#352600',
+          color:"wheat"
+        }
+      })
+      let progress=0;
+      const interval=setInterval(() => {
+        if(progress>=100){
+          clearInterval(interval)
+          return
+        }
+        progress+=10;
+        toast.loading(`Uploading...${progress}%`,{
+          id:toastId ,
+          style: {backgroundColor:'#352600',
+            color:"wheat"
+          }
+        })
+      }, 500);
+      try {
+        const uploadedUrl = await uploadactions(file);
+        clearInterval(interval)
+        toast.success("Upload Complete !",{
+          id:toastId
+        })
+        setAvatarurl(uploadedUrl)
+        console.log("uploaded avatar", uploadedUrl);
+        
+      } catch (error) {
+        clearInterval(interval)
+        toast.error("Upload Failed ",{
+          id:toastId
+        })
+      }
+    }}
   return (
     <form action={save}>
       <div className="bg-gray-200 p-4 rounded-lg">
@@ -140,10 +215,8 @@ function Profileinforform({profileinfo,avatar}:Props  ) {
             </label>
           </div>
         </div>
-
-        {/* Form Section */}
-        <div className="mt-6 space-y-4">
-          <div>
+    <div className="grid grid-cols-2 gap-2"> 
+    <div>
             <label htmlFor="usernameIn" className="block text-sm font-medium text-gray-700" >
               Username
             </label>
@@ -170,6 +243,12 @@ function Profileinforform({profileinfo,avatar}:Props  ) {
               className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
             />
           </div>
+
+
+    </div>
+        {/* Form Section */}
+        <div className="mt-6 space-y-4">
+         
           <input type="hidden" name="coverurl" value={url || ""} />
           <input type="hidden" name="avatar" value={avatarurl || ""} />
 

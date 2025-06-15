@@ -10,7 +10,7 @@ export default function Header({ session }: { session: Session | null }) {
     const email = session?.user?.email || "";
     const firstTwoParts = email.split(".").slice(0, 2).join(".");
     return (
-    <header className="mb-16">
+    <header className="mb-10">
       <div className="flex justify-between max-w-4xl mx-auto px-8 mt-1 py-4 w-full">
         {/* Left side: "Get me a Chai" */}
         <Link href={"/"} className="inline-flex items-center gap-2 text-center">
@@ -24,13 +24,13 @@ export default function Header({ session }: { session: Session | null }) {
 
         {/* Right side: Navigation and user auth */}
         <nav className="mt-2 flex items-center gap-6 ml-auto">
-          <Link href="/about" className="text-gray-800 font-medium hover:underline">
+          <Link href="/about" className="text-wheat-800 font-medium hover:underline">
             About
           </Link>
-          <Link href="/contact" className="text-gray-800 font-medium hover:underline">
+          <Link href="/contact" className="text-text-wheat-800-800 font-medium hover:underline">
             Contact
           </Link>
-          <Link href="/faq" className="text-gray-800 font-medium hover:underline">
+          <Link href="/faq" className="text-text-wheat-800-800 font-medium hover:underline">
             FAQ
           </Link>
 
@@ -39,10 +39,10 @@ export default function Header({ session }: { session: Session | null }) {
               <div className="flex gap-4">
                 <button
                   onClick={() => signIn('google')}
-                  className="bg--300 px-4 py-2 font-bold rounded-full ml-2 hover:bg-yellow-400 transition border">
+                  className="bg--300 px-4 py-2 font-bold rounded-full ml-2 hover:bg-yellow-200 transition border">
                   Login
                 </button>
-                <button className="bg-amber-300 px-4 py-2 font-bold rounded-full hover:bg-yellow-400 transition">
+                <button className="bg-amber-300 px-4 py-2 font-bold rounded-full hover:bg-yellow-200 transition">
                   Signup
                 </button>
               </div>
@@ -56,7 +56,7 @@ export default function Header({ session }: { session: Session | null }) {
                 </Link>
                 <button
                   onClick={() => signOut()}
-                  className="bg-amber-300 px-4 py-2 font-bold rounded-full hover:bg-yellow-400 transition">
+                  className="bg-amber-500 px-4 py-2 font-bold rounded-full hover:bg-yellow-200 transition">
                   Logout
                 </button>
               </>
