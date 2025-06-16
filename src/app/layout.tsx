@@ -28,7 +28,7 @@ export default async function  RootLayout({
 }>) {
   const session=await getServerSession(authOptions)
   return (
-    <html lang="en" className="dark">
+    <html lang="en" className="">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

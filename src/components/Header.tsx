@@ -1,69 +1,87 @@
-'use client'
+'use client';
 import Link from "next/link";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMugHot, faUser } from "@fortawesome/free-solid-svg-icons";
+import { useState } from "react";
 import { signIn, signOut } from "next-auth/react";
-import { Session } from "next-auth";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBars, faMugHot } from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
+import { Session } from "next-auth";
 
 export default function Header({ session }: { session: Session | null }) {
-    const email = session?.user?.email || "";
-    const firstTwoParts = email.split(".").slice(0, 2).join(".");
-    return (
-    <header className="mb-10">
-      <div className="flex justify-between max-w-4xl mx-auto px-8 mt-1 py-4 w-full">
-        {/* Left side: "Get me a Chai" */}
-        <Link href={"/"} className="inline-flex items-center gap-2 text-center">
-          {/* Fixed icon size to prevent shrinking */}
-          <FontAwesomeIcon
-            icon={faMugHot}
-            className="w-10 h-10 min-w-[40px] min-h-[40px] text-amber-700"
-          />
-          <span className="text-xl font-semibold mt-1 whitespace-nowrap">Get me a Chai</span>
+  const [menuOpen, setMenuOpen] = useState(false);
+  const email = session?.user?.email || "";
+  const userName = session?.user?.name?.split(" ")[0] || "";
+
+  return (
+    <header className="mb-4 mt-4 px-4 sm:px-8">
+      <div className="max-w-6xl mx-auto flex justify-between items-center">
+        {/* Left: Logo */}
+        <Link href="/" className="flex items-center gap-2">
+          <FontAwesomeIcon icon={faMugHot} className="w-8 h-8 text-amber-700" />
+          <span className="text-xl font-semibold whitespace-nowrap">Get me a Chai</span>
         </Link>
 
-        {/* Right side: Navigation and user auth */}
-        <nav className="mt-2 flex items-center gap-6 ml-auto">
-          <Link href="/about" className="text-wheat-800 font-medium hover:underline">
-            About
-          </Link>
-          <Link href="/contact" className="text-text-wheat-800-800 font-medium hover:underline">
-            Contact
-          </Link>
-          <Link href="/faq" className="text-text-wheat-800-800 font-medium hover:underline">
-            FAQ
-          </Link>
+        {/* Right: Mobile Menu Icon & Profile */}
+        <div className="flex items-center gap-4 sm:hidden">
+          {session && (
+            <Link href={'/profile'}>
+            <Image
+              src={session.user?.image || "/default-avatar.png"}
+              alt="avatar"
+              width={32}
+              height={32}
+              className="rounded-full"
+            />
+            </Link>
+          )}
+          <button
+            className="text-xl"
+            onClick={() => setMenuOpen(!menuOpen)}
+          >
+            <FontAwesomeIcon icon={faBars} />
+          </button>
+        </div>
 
-          <div className="flex items-center gap-4">
-            {!session ? (
-              <div className="flex gap-4">
-                <button
-                  onClick={() => signIn('google')}
-                  className="bg--300 px-4 py-2 font-bold rounded-full ml-2 hover:bg-yellow-200 transition border">
-                  Login
-                </button>
-                <button className="bg-amber-300 px-4 py-2 font-bold rounded-full hover:bg-yellow-200 transition">
-                  Signup
-                </button>
-              </div>
-            ) : (
-              <>
-                <Link href={`/profile`}className="flex items-center gap-2 min-w-[150px] flex-shrink-0">
-                {/* <Link href={`/profile/${(email || "").split("@")[0]}`}className="flex items-center gap-2 min-w-[150px] flex-shrink-0"> */}
-                  <Image src={session.user?.image || "/default-avatar.png"} alt="avatar" width='30' height="30" 
-                  className=" rounded-full"></Image>
-                  <span className="text-lg font-medium">{`Hello, ${session.user?.name}`}</span>
-                </Link>
-                <button
-                  onClick={() => signOut()}
-                  className="bg-amber-500 px-4 py-2 font-bold rounded-full hover:bg-yellow-200 transition">
-                  Logout
-                </button>
-              </>
-            )}
-          </div>
+        {/*desktop*/}
+        <nav className="hidden sm:flex gap-6 items-center">
+          <Link href="/about" className="hover:underline">About</Link>
+          <Link href="/contact" className="hover:underline">Contact</Link>
+          <Link href="/faq" className="hover:underline">FAQ</Link>
+
+          {!session ? (
+            <>
+              <button onClick={() => signIn('google')} className="border px-4 py-1 rounded-full hover:bg-yellow-200">Login</button>
+              <button onClick={() => signIn('google')} className="bg-amber-300 px-4 py-1 rounded-full font-bold hover:bg-yellow-200">Signup</button>
+            </>
+          ) : (
+            <div className="flex items-center gap-3">
+              <Link href="/profile" className="flex items-center gap-2">
+                <Image src={session.user?.image || "/default-avatar.png"} alt="avatar" width={30} height={30} className="rounded-full" />
+                <span>Hello, {userName}</span>
+              </Link>
+              <button onClick={() => signOut()} className="bg-amber-500 px-4 py-1 rounded-full font-bold hover:bg-yellow-200">Logout</button>
+            </div>
+          )}
         </nav>
       </div>
+
+      
+      {menuOpen && (
+        <div className="sm:hidden mt-2 bg-white border rounded-md shadow-lg p-4 text-center space-y-2">
+          <Link href="/about" onClick={() => setMenuOpen(false)}>About</Link><br />
+          <Link href="/contact" onClick={() => setMenuOpen(false)}>Contact</Link><br />
+          <Link href="/faq" onClick={() => setMenuOpen(false)}>FAQ</Link><br />
+
+          {!session ? (
+            <div className="space-y-2">
+              <button onClick={() => signIn('google')} className="block w-full border rounded-full py-1 hover:bg-yellow-200">Login</button>
+              <button onClick={() => signIn('google')} className="block w-full bg-amber-300 rounded-full py-1 font-bold hover:bg-yellow-200">Signup</button>
+            </div>
+          ) : (
+            <button onClick={() => signOut()} className="w-full bg-amber-500 rounded-full py-1 font-bold hover:bg-yellow-200">Logout</button>
+          )}
+        </div>
+      )}
     </header>
   );
 }

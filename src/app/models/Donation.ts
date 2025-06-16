@@ -1,29 +1,30 @@
-import { models, Schema,model } from "mongoose";
-type Donation={
-    amount:Number;
-name:String;
-message?:String;
-crypto:'btc'|'eth'|'ltc';
-paid:Boolean;
-}
-const Donationschema=new Schema({
-    amount:{type:Number,required:true},
-    name:{type:String,required:true},
-    message:{type:String,required:false},
- crypto: {
-  type: String,
-  required: true,
-  validate: {
-    validator: function (v:string
-    ) {
-      return ['btc','eth','ltc'].includes(v)
-    },
-   
+import { models, Schema,model, Types } from "mongoose";
+import { Profilemodel } from "./Profileinfo";
+type Donation = {
+  amount: number;
+  name: string;
+  message?: string;
+  paid: boolean;
+  payment_id?: string;
+  order_id?: string;
+  createdAt?: Date;
+  creator:Types.ObjectId
+};
+
+const DonationSchema = new Schema<Donation>({
+  amount: { type: Number, required: true },
+  name: { type: String, required: true },
+  message: { type: String, required: false },
+  paid: { type: Boolean, default: false },
+  payment_id: { type: String },
+  order_id: { type: String },
+  createdAt: { type: Date, default: Date.now },
+  creator:{
+    type:Schema.Types.ObjectId,
+    ref:"Profileinfo",
+    required:true
   }
-},
-paid:{type:Boolean ,default:false}
-
-})
+});
 
 
-export const DonationModel=models?.Donation|| model('Donation',Donationschema)
+export const DonationModel=models?.Donation|| model('Donation',DonationSchema)

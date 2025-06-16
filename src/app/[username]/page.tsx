@@ -63,7 +63,7 @@ async function Page({params}:Props) {
             </div>
             <div  className="bg-gray-800 rounded-xl p-4">
               
-              <Donationform/>
+              <Donationform email={profileinfo.email} _id={String(profileinfo._id)}/>
             </div>
           </div>
 

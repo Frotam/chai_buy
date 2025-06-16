@@ -1,4 +1,4 @@
-import { model, models, Schema, Model } from "mongoose";
+import { model, models, Schema, Model, Types } from "mongoose";
 
 export type Profileinfo = {
   username: string;
@@ -7,6 +7,7 @@ export type Profileinfo = {
   avatar: string;
   coverurl: string;
   email:string;
+
 };
 
 const ProfileinfoSchema = new Schema<Profileinfo>(
