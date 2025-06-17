@@ -1,5 +1,4 @@
-import mongoose, { Mongoose } from "mongoose";
-import { DonationModel } from "../models/Donation";
+
 
 declare global {
   interface Window {

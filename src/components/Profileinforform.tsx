@@ -2,9 +2,9 @@
 // import Getprofile from "@/app/actions/Getprofile";
 import { saveprofile } from "@/app/actions/Profileinfoaction";
 import uploadactions from "@/app/actions/uploadactions";
-import { authOptions } from "@/app/lib/authoptions";
+ 
 import { Profileinfo } from "@/app/models/Profileinfo";
-import { getServerSession } from "next-auth";
+ 
 import { ChangeEvent, ChangeEventHandler, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 type Props={

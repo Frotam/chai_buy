@@ -1,4 +1,4 @@
-import NextAuth, { AuthOptions } from "next-auth"
+import  { AuthOptions } from "next-auth"
 import GoogleProvider from "next-auth/providers/google";
 import { MongoDBAdapter } from "@auth/mongodb-adapter"
 import client from "@/app/lib/db";

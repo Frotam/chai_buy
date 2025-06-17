@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
-import Header from "@/components/Header";
+import "./globals.css"; 
 import { getServerSession } from "next-auth";
 import { authOptions } from "./lib/authoptions";
 import { Toaster } from 'react-hot-toast';

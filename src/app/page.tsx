@@ -1,8 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { faStar } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { signIn } from 'next-auth/react';
+ 
 import Homepage from './Homepage';
 
 

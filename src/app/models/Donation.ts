@@ -1,5 +1,5 @@
 import { models, Schema,model, Types } from "mongoose";
-import { Profilemodel } from "./Profileinfo";
+
 type Donation = {
   amount: number;
   name: string;
