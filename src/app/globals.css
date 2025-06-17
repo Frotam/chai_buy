@@ -1,23 +1,34 @@
 @import "tailwindcss";
 
-input[type="text"],textarea{
+@layer base {
+  body {
+    @apply bg-black text-white relative font-sans h-screen overflow-x-hidden antialiased;
+  }
+}
+
+
+/* Form elements */
+input[type="text"], textarea {
     @apply block w-full border p-2 rounded-lg;
 }
-/* .dark body {
-    @apply bg-black text-white;
-  } */
-button.amount{
+
+/* Button styles */
+button.amount {
     @apply rounded-full size-12 border border-yellow-300 justify-center inline-flex items-center;
 }
-button.amount.active{
+
+button.amount.active {
     @apply bg-yellow-300;
 }
-button.crypto.active{
+
+button.crypto.active {
     @apply border-yellow-300 bg-yellow-300/20 text-white rounded-3xl p-2;
 }
-button.crypto span{
+
+button.crypto span {
     @apply block font-semibold leading-5;
 }
-button.crypto p{
+
+button.crypto p {
     @apply text-xs leading-3;
 }

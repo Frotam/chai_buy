@@ -5,7 +5,7 @@ import Header from "@/components/Header";
 import { getServerSession } from "next-auth";
 import { authOptions } from "./lib/authoptions";
 import { Toaster } from 'react-hot-toast';
-
+ import "../app/Styles/Homepagecss.css"
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -28,12 +28,11 @@ export default async function  RootLayout({
 }>) {
   const session=await getServerSession(authOptions)
   return (
-    <html lang="en" className="">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+    <html lang="en">
+      <body className={` bg-black ${geistSans.variable} ${geistMono.variable} antialiased`}>
+
         <Toaster/>
-        <Header session={session?session:null}></Header>
+        {/* <Header session={session?session:null}></Header> */}
          
         {children}
          

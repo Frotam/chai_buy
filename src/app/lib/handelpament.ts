@@ -33,7 +33,7 @@ export async function handleRazorpayPayment({amount,helper_name,creator,message=
       name: "BUY Chai My BOE",
       description: "Kharid Wa do",
       order_id: data.orderID,
-      handler: function (response: any) {
+      handler: async function (response: any) {
         console.log("Payment Successful", response);
       },
       prefill: {
@@ -46,12 +46,10 @@ export async function handleRazorpayPayment({amount,helper_name,creator,message=
 
     const rzp1 = new window.Razorpay(options);
     rzp1.open();
-    console.log(data.onerror)
-    await mongoose.connect(process.env.MONGODB_URI as string)
+    
+    
 
-    const Prof=await  DonationModel.create({
-      amount:amount,name:helper_name,message:message,order_id:data.orderID,creator:creator,createdAt:Date.now(),paid:true
-    }) 
+  
   } catch (error) {
     console.error("Payment error", error);
   }
