@@ -1,5 +1,5 @@
 // Example fix in uploadactions.ts
-'use server'
+'use client'
 const uploadactions = async (file: File): Promise<string> => {
     const formData = new FormData();
     formData.append("file", file);

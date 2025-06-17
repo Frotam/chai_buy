@@ -1,5 +1,7 @@
 import type { NextConfig } from "next";
 
+/** @type {import('next').NextConfig} */
+
 const nextConfig: NextConfig = {
   images: {
     domains:['res.cloudinary.com'],
@@ -12,6 +14,7 @@ const nextConfig: NextConfig = {
     ],
   },
   experimental: {
+    serverComponentsExternalPackages: ['mongodb'],
     serverActions: {
       bodySizeLimit: '5mb',  
     },
